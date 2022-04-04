@@ -13,6 +13,7 @@ global $conn;
 </head>
 
 <body>
+    <a href="./insert.php">Create new Article</a>
     <?php
 
 
