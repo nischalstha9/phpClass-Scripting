@@ -68,13 +68,13 @@ if (isset($_GET['id'])) {
             <input required type="text" id="full_name" name="full_name" value="<?= $student['full_name'] ?>"><br>
 
             <label for="address">Address:</label>
-            <input required type="text" id="address" name="address" value="<?= $student['address'] ?>" <br>
+            <input required type="text" id="address" name="address" value="<?= $student['address'] ?> <br>
 
             <label for=" email">Email:</label>
-            <input required type="email" id="email" name="email" value="<?= $student['email'] ?>" <br>
+            <input required type="email" id="email" name="email" value="<?= $student['email'] ?> <br>
 
             <label for=" phone">Phone:</label>
-            <input required type="number" id="phone" name="phone" value="<?= $student['phone'] ?>" <br>
+            <input required type="number" id="phone" name="phone" value="<?= $student['phone'] ?> <br>
 
             <label for=" gender">Gender:</label>
             <input type="radio" name="gender" id="gender" value="male">Male</input>
