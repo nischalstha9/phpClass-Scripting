@@ -25,13 +25,10 @@ if (isset($_GET['id'])) {
         $gender = $_POST['gender'];
         $levels = $_POST['level'];
         $faculty = $_POST['faculty'];
-        $level = "";
-        foreach ($levels as $lvl) {
-            $level .= $lvl . ",";
-        }
+        $level = implode(',', $levels);
         $sql = $conn->prepare("UPDATE student SET full_name = ?, address = ?, phone = ?, email = ?, gender = ?, level=?, faculty= ? WHERE id = ?");
         $sql->bind_param(
-            'sssssss',
+            'sssssssi',
             $full_name,
             $address,
             $phone,
@@ -39,10 +36,13 @@ if (isset($_GET['id'])) {
             $gender,
             $level,
             $faculty,
+            $student_id
         );
         $sql->execute();
-        if ($sql->affected_rows > 0) {
+        if (!$sql->errno) {
             header("Location: ./index.php");
+        } else {
+            var_dump($sql->error);
         }
         $sql->close();
         exit();
@@ -63,35 +63,38 @@ if (isset($_GET['id'])) {
     <div class='container'>
         <h1>Update Student</h1>
         <a href="./index.php">Back to List</a>
-        <form action="./update.php" method="post">
+        <form action="./update.php?id=<?= $student_id ?>" method="post">
             <label for="full_name">Name:</label>
             <input required type="text" id="full_name" name="full_name" value="<?= $student['full_name'] ?>"><br>
 
             <label for="address">Address:</label>
-            <input required type="text" id="address" name="address" value="<?= $student['address'] ?> <br>
+            <input required type="text" id="address" name="address" value="<?= $student['address'] ?>"><br>
 
             <label for=" email">Email:</label>
-            <input required type="email" id="email" name="email" value="<?= $student['email'] ?> <br>
+            <input required type="email" id="email" name="email" value="<?= $student['email'] ?>"><br>
 
             <label for=" phone">Phone:</label>
-            <input required type="number" id="phone" name="phone" value="<?= $student['phone'] ?> <br>
+            <input required type="number" id="phone" name="phone" value="<?= $student['phone'] ?>"><br>
 
             <label for=" gender">Gender:</label>
-            <input type="radio" name="gender" id="gender" value="male">Male</input>
-            <input type="radio" name="gender" id="gender" value="female">Female</input><br>
+            <input type="radio" name="gender" id="gender" <?php echo ($student["gender"] == "male" ? "checked" : "") ?> value="male">Male</input>
+            <input type="radio" name="gender" id="gender" <?php echo ($student["gender"] == "female" ? "checked" : "") ?> value="female">Female</input><br>
 
             <label for="level">Level:</label>
-            <input type="checkbox" <?php $student['faculty'] == "SEE/SLC" ? "checked" : "" ?> name="level[]" id="level" value="SEE/SLC">SEE/SLC</input>
-            <input type="checkbox" <?php $student['faculty'] == "+2" ? "checked" : "" ?> name="level[]" id="level" value="+2">+2</input>
-            <input type="checkbox" <?php $student['faculty'] == "Bachelors" ? "checked" : "" ?> name="level[]" id="level" value="Bachelors">Bachelors</input>
-            <input type="checkbox" <?php $student['faculty'] == "Masters" ? "checked" : "" ?> name="level[]" id="level" value="Masters">Masters</input><br>
+            <?php
+            $levels_arr = explode(',', $student['level']);
+            ?>
+            <input type="checkbox" <?php echo (in_array("SEE/SLC", $levels_arr)  ? "checked" : "") ?> name="level[]" id="level" value="SEE/SLC">SEE/SLC</input>
+            <input type="checkbox" <?php echo (in_array("+2", $levels_arr)  ? "checked" : "") ?> name="level[]" id="level" value="+2">+2</input>
+            <input type="checkbox" <?php echo (in_array("Bachelors", $levels_arr) ? "checked" : "") ?> name="level[]" id="level" value="Bachelors">Bachelors</input>
+            <input type="checkbox" <?php echo (in_array("Masters", $levels_arr) ? "checked" : "") ?> name="level[]" id="level" value="Masters">Masters</input><br>
 
             <label for="faculty">Faculty:</label>
             <select name="faculty" id="faculty">
-                <option value="BCA" <?php $student['faculty'] == "BCA" ? "checked" : "" ?>>BCA</option>
-                <option value="BBM" <?php $student['faculty'] == "BBM" ? "checked" : "" ?>>BBM</option>
-                <option value="BBS" <?php $student['faculty'] == "BBS" ? "checked" : "" ?>>BBS</option>
-                <option value="BIT" <?php $student['faculty'] == "BIT" ? "checked" : "" ?>>BIT</option>
+                <option value="BCA" <?php $student['faculty'] == "BCA" ? "selected" : "" ?>>BCA</option>
+                <option value="BBM" <?php $student['faculty'] == "BBM" ? "selected" : "" ?>>BBM</option>
+                <option value="BBS" <?php $student['faculty'] == "BBS" ? "selected" : "" ?>>BBS</option>
+                <option value="BIT" <?php $student['faculty'] == "BIT" ? "selected" : "" ?>>BIT</option>
             </select><br>
 
 

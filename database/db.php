@@ -2,7 +2,8 @@
 $host = "localhost";
 $name = "blog";
 $user = "root";
-$password = "";
+$password = "root";
+ini_set("error_reporting", E_ALL);
 
 $conn = mysqli_connect($host, $user, $password, $name);
 if (mysqli_connect_errno()) {

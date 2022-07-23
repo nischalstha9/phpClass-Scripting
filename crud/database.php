@@ -1,8 +1,10 @@
 <?php
 $host = "localhost";
 $username = "root";
-$password = "";
-$database = "student_data";
+$password = "root";
+$database = "students";
+ini_set("error_reporting", E_ALL);
+ini_set("display_errors", 1);
 
 $conn = new mysqli($host, $username, $password, $database);
 if ($conn->connect_errno) :

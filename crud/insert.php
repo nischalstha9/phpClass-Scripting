@@ -2,6 +2,9 @@
 include "database.php";
 
 if (isset($_POST['submitBtn'])) {
+    global $conn;
+    var_dump($_POST);
+    // exit();
     $full_name = $_POST['full_name'];
     $address = $_POST['address'];
     $phone = $_POST['phone'];
@@ -9,11 +12,10 @@ if (isset($_POST['submitBtn'])) {
     $gender = $_POST['gender'];
     $levels = $_POST['level'];
     $faculty = $_POST['faculty'];
-    $level = "";
-    foreach ($levels as $lvl) {
-        $level .= $lvl . ",";
-    }
-    global $conn;
+    $level = implode(",", $levels);
+    // foreach ($levels as $lvl) {
+    //     $level .= $lvl . ",";
+    // }
     $sql = $conn->prepare("INSERT INTO student (full_name, address, phone, email, gender, level, faculty) VALUES (?,?,?,?,?,?,?)");
     $sql->bind_param(
         "sssssss",
@@ -26,8 +28,10 @@ if (isset($_POST['submitBtn'])) {
         $faculty,
     );
     $sql->execute();
-    if ($sql->affected_rows !== 0) {
+    if ($sql->affected_rows > 0) {
         header("Location: ./index.php");
+    } else {
+        var_dump($sql->error);
     }
     $sql->close();
     exit();
@@ -58,8 +62,8 @@ if (isset($_POST['submitBtn'])) {
             <input required type="number" id="phone" name="phone"><br>
 
             <label for="gender">Gender:</label>
-            <input type="radio" name="gender" id="gender" value="male">Male</input>
-            <input type="radio" name="gender" id="gender" value="female">Female</input><br>
+            <input type="radio" required name="gender" id="gender" value="male">Male</input>
+            <input type="radio" required name="gender" id="gender" value="female">Female</input><br>
 
             <label for="level">Level:</label>
             <input type="checkbox" name="level[]" id="level" value="SEE/SLC">SEE/SLC</input>
