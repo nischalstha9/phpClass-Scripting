@@ -60,7 +60,7 @@ if (isset($_POST['loginBtn'])) {
                 <label for="email">Email address</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" value="<?php if (isset($_COOKIE["member_login"])) {
                                                                                                                         echo $_COOKIE["member_login"];
-                                                                                                                    } ?>">
+                                                                                                                    } ?>" autocomplete="false">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>

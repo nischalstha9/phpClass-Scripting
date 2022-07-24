@@ -54,7 +54,7 @@ if (!isset($_SESSION['user'])) {
             let bg = getCookie('bg_color') ? getCookie('bg_color') : body.style.backgroundColor;
             let newbg = bg === "black" ? "white" : "black";
             body.style.backgroundColor = newbg;
-            document.cookie = `bg_color=${newbg};`;
+            document.cookie = `bg_color=${newbg};expires=Fri, 31 Dec 9999 23:59:59 GMT`;
         }
 
         const jsCookieHolder = document.querySelector("#js-accessible-cookies")

@@ -1,10 +1,8 @@
 <?php
 include "database.php";
 
-if (isset($_POST['submitBtn'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitBtn"])) {
     global $conn;
-    var_dump($_POST);
-    // exit();
     $full_name = $_POST['full_name'];
     $address = $_POST['address'];
     $phone = $_POST['phone'];
@@ -13,9 +11,6 @@ if (isset($_POST['submitBtn'])) {
     $levels = $_POST['level'];
     $faculty = $_POST['faculty'];
     $level = implode(",", $levels);
-    // foreach ($levels as $lvl) {
-    //     $level .= $lvl . ",";
-    // }
     $sql = $conn->prepare("INSERT INTO student (full_name, address, phone, email, gender, level, faculty) VALUES (?,?,?,?,?,?,?)");
     $sql->bind_param(
         "sssssss",
@@ -80,7 +75,7 @@ if (isset($_POST['submitBtn'])) {
             </select><br>
 
 
-            <input required type="submit" value="Submit" name="submitBtn" class="btn btn-primary"><br>
+            <input required type="submit" name="submitBtn" class="btn btn-primary"><br>
 
 
         </form>
